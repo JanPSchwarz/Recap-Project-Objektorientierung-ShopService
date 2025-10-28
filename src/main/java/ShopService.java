@@ -39,11 +39,10 @@ public class ShopService {
 
 
     public Order updateOrder(String orderId, OrderStatus orderStatus) throws OrderNotFoundException {
-        Order orderToUpdate = orderRepo.getOrderById(orderId);
-        if (orderToUpdate == null) {
-            System.out.println("Order with id " + orderId + " could not be updated:");
-            throw new OrderNotFoundException(orderId);
-        }
+        Optional<Order> optionalOrder = orderRepo.getOrderById(orderId);
+        
+        Order orderToUpdate = optionalOrder.orElseThrow(() -> new OrderNotFoundException(orderId));
+
         orderToUpdate = orderToUpdate.withOrderStatus(orderStatus);
         orderRepo.addOrder(orderToUpdate);
 
