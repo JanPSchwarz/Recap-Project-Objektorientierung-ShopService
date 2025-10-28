@@ -25,6 +25,7 @@ public class Main {
         System.out.println("Result:");
         System.out.println(result);
 
+        shopService.addOrder(List.of("1"));
     }
 
     static String createUUID() {
