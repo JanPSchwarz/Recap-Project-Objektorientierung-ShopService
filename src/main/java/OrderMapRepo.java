@@ -1,8 +1,11 @@
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@NoArgsConstructor
 public class OrderMapRepo implements OrderRepo{
     private Map<String, Order> orders = new HashMap<>();
 

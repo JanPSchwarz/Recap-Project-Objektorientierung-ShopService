@@ -1,6 +1,11 @@
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
+@AllArgsConstructor
 public class ProductRepo {
     private List<Product> products;
 

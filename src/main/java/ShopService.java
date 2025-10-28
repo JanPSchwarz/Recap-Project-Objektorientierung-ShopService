@@ -1,9 +1,19 @@
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+
 public class ShopService {
+    @Builder.Default
     private ProductRepo productRepo = new ProductRepo();
+    @Builder.Default
     private OrderRepo orderRepo = new OrderMapRepo();
 
     public Order addOrder(List<String> productIds) {
@@ -17,7 +27,7 @@ public class ShopService {
             products.add(productToOrder);
         }
 
-        Order newOrder = new Order(UUID.randomUUID().toString(), products);
+        Order newOrder = new Order(UUID.randomUUID().toString(), products, OrderStatus.PROCESSING);
 
         return orderRepo.addOrder(newOrder);
     }
