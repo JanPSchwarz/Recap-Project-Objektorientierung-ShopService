@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,8 +23,6 @@ public class Main {
         List<Order> result = shopService.findAllWithOrderStatus(OrderStatus.COMPLETED);
         System.out.println("Result:");
         System.out.println(result);
-
-        shopService.addOrder(List.of("1"));
     }
 
     static String createUUID() {

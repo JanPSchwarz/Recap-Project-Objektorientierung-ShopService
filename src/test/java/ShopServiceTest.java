@@ -57,4 +57,31 @@ class ShopServiceTest {
         assertTrue(actualOrders.isEmpty());
         assertNotEquals(expectedOrders, actualOrders);
     }
+
+    @Test
+    void updateOrder_shouldReturnTrueWhenOrderUpdated() {
+        // SETUP
+        ShopService shopService = new ShopService();
+        OrderRepo repo = shopService.getOrderRepo();
+        Order newOrder = new Order("1", List.of(new Product("1", "Apfel")), OrderStatus.PROCESSING);
+        repo.addOrder(newOrder);
+
+        // EXPECTED
+        Order expectedUpdatedOrder = new Order("1", List.of(new Product("1", "Apfel")), OrderStatus.COMPLETED);
+
+        // THEN
+        Order actualUpdatedOrder = shopService.updateOrder(newOrder.id(), OrderStatus.COMPLETED);
+        assertEquals(expectedUpdatedOrder, actualUpdatedOrder);
+    }
+
+    @Test
+    void updateOrder_shouldThrowErrorWhenOrderNotUpdated() {
+        // SETUP
+        ShopService shopService = new ShopService();
+
+        String notExistingOrderId = "1";
+
+        // THEN
+        assertThrows(OrderNotFoundException.class, () -> shopService.updateOrder(notExistingOrderId, OrderStatus.COMPLETED));
+    }
 }
