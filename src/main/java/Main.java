@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,8 +15,15 @@ public class Main {
         ShopService shopService = ShopService.builder().productRepo(productRepo).build();
 
         Order newOrder = shopService.addOrder(productIds);
+        Order completedOrder = new Order(createUUID(), List.of(toothBrush), OrderStatus.COMPLETED);
+        shopService.getOrderRepo().addOrder(completedOrder);
 
-        System.out.println(newOrder);
+        System.out.println("all orders:");
+        System.out.println(shopService.getOrderRepo().getOrders());
+
+        List<Order> result = shopService.findAllWithOrderStatus(OrderStatus.COMPLETED);
+        System.out.println("Result:");
+        System.out.println(result);
 
     }
 
