@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,7 @@ class OrderListRepoTest {
         OrderListRepo repo = new OrderListRepo();
 
         Product product = new Product("1", "Apfel");
-        Order newOrder = new Order("1", List.of(product), OrderStatus.PROCESSING);
+        Order newOrder = new Order("1", List.of(product), OrderStatus.PROCESSING, Instant.now());
         repo.addOrder(newOrder);
 
         // WHEN
@@ -24,7 +25,7 @@ class OrderListRepoTest {
         // THEN
         List<Order> expected = new ArrayList<>();
         Product product1 = new Product("1", "Apfel");
-        expected.add(new Order("1", List.of(product1), OrderStatus.PROCESSING));
+        expected.add(new Order("1", List.of(product1), OrderStatus.PROCESSING, Instant.now()));
 
         assertEquals(actual, expected);
     }
@@ -35,7 +36,7 @@ class OrderListRepoTest {
         OrderListRepo repo = new OrderListRepo();
 
         Product product = new Product("1", "Apfel");
-        Order newOrder = new Order("1", List.of(product), OrderStatus.PROCESSING);
+        Order newOrder = new Order("1", List.of(product), OrderStatus.PROCESSING, Instant.now());
         repo.addOrder(newOrder);
 
         // WHEN
@@ -44,7 +45,7 @@ class OrderListRepoTest {
 
         // THEN
         Product product1 = new Product("1", "Apfel");
-        Order expected = new Order("1", List.of(product1), OrderStatus.PROCESSING);
+        Order expected = new Order("1", List.of(product1), OrderStatus.PROCESSING, Instant.now());
 
         assertEquals(actual, expected);
     }
@@ -54,13 +55,13 @@ class OrderListRepoTest {
         // GIVEN
         OrderListRepo repo = new OrderListRepo();
         Product product = new Product("1", "Apfel");
-        Order newOrder = new Order("1", List.of(product), OrderStatus.PROCESSING);
+        Order newOrder = new Order("1", List.of(product), OrderStatus.PROCESSING, Instant.now());
 
         // WHEN
         Order actual = repo.addOrder(newOrder);
 
         // THEN
-        Order expected = new Order("1", List.of(product), OrderStatus.PROCESSING);
+        Order expected = new Order("1", List.of(product), OrderStatus.PROCESSING, Instant.now());
         assertEquals(actual, expected);
     }
 
@@ -69,7 +70,7 @@ class OrderListRepoTest {
         // SETUP
         OrderListRepo repo = new OrderListRepo();
         Product product = new Product("1", "Apfel");
-        Order newOrder = new Order("1", List.of(product), OrderStatus.PROCESSING);
+        Order newOrder = new Order("1", List.of(product), OrderStatus.PROCESSING, Instant.now());
         repo.addOrder(newOrder);
 
         // EXPECTED

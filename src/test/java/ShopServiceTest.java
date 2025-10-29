@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +17,7 @@ class ShopServiceTest {
         Order actual = shopService.addOrder(productsIds);
 
         // THEN
-        Order expected = new Order("-1", List.of(new Product("1", "Apfel")), OrderStatus.PROCESSING);
+        Order expected = new Order("-1", List.of(new Product("1", "Apfel")), OrderStatus.PROCESSING, Instant.now());
         assertEquals(expected.products(), actual.products());
         assertNotNull(expected.id());
     }
@@ -35,7 +36,7 @@ class ShopServiceTest {
     void findAllWithOrderStatus_shouldReturnTrueWhenOrdersFound() {
         ShopService shopService = new ShopService();
         OrderRepo repo = shopService.getOrderRepo();
-        Order newOrder = new Order("1", List.of(new Product("1", "Apfel")), OrderStatus.PROCESSING);
+        Order newOrder = new Order("1", List.of(new Product("1", "Apfel")), OrderStatus.PROCESSING, Instant.now());
         repo.addOrder(newOrder);
 
         List<Order> actualOrders = shopService.findAllWithOrderStatus(OrderStatus.PROCESSING);
@@ -48,7 +49,7 @@ class ShopServiceTest {
     void findAllWithOrderStatus_shouldReturnTrueWhenOrdersEmpty() {
         ShopService shopService = new ShopService();
         OrderRepo repo = shopService.getOrderRepo();
-        Order newOrder = new Order("1", List.of(new Product("1", "Apfel")), OrderStatus.PROCESSING);
+        Order newOrder = new Order("1", List.of(new Product("1", "Apfel")), OrderStatus.PROCESSING, Instant.now());
         repo.addOrder(newOrder);
 
         List<Order> actualOrders = shopService.findAllWithOrderStatus(OrderStatus.COMPLETED);
@@ -63,11 +64,11 @@ class ShopServiceTest {
         // SETUP
         ShopService shopService = new ShopService();
         OrderRepo repo = shopService.getOrderRepo();
-        Order newOrder = new Order("1", List.of(new Product("1", "Apfel")), OrderStatus.PROCESSING);
+        Order newOrder = new Order("1", List.of(new Product("1", "Apfel")), OrderStatus.PROCESSING, Instant.now());
         repo.addOrder(newOrder);
 
         // EXPECTED
-        Order expectedUpdatedOrder = new Order("1", List.of(new Product("1", "Apfel")), OrderStatus.COMPLETED);
+        Order expectedUpdatedOrder = new Order("1", List.of(new Product("1", "Apfel")), OrderStatus.COMPLETED, Instant.now());
 
         // THEN
         Order actualUpdatedOrder = shopService.updateOrder(newOrder.id(), OrderStatus.COMPLETED);
