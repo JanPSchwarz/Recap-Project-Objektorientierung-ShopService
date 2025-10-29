@@ -1,7 +1,8 @@
 public enum OrderStatus {
     PROCESSING("Processing"),
     IN_DELIVERY("In Delivery"),
-    COMPLETED("Completed"),;
+    COMPLETED("Completed"),
+    ;
 
     private final String value;
 

@@ -1,18 +1,20 @@
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.util.*;
 
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 
 public class ShopService {
     @Builder.Default
     private ProductRepo productRepo = new ProductRepo();
     @Builder.Default
-    @With
     private OrderRepo orderRepo = new OrderMapRepo();
 
     public List<Order> findAllWithOrderStatus(OrderStatus orderStatus) {
