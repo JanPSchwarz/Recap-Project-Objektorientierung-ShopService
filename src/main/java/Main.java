@@ -1,3 +1,4 @@
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,7 +15,7 @@ public class Main {
         ShopService shopService = ShopService.builder().productRepo(productRepo).build();
 
         Order newOrder = shopService.addOrder(productIds);
-        Order completedOrder = new Order(createUUID(), List.of(toothBrush), OrderStatus.COMPLETED);
+        Order completedOrder = new Order(createUUID(), List.of(toothBrush), OrderStatus.COMPLETED, Instant.now());
         shopService.getOrderRepo().addOrder(completedOrder);
 
         System.out.println("all orders:");

@@ -1,5 +1,6 @@
 import lombok.*;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class ShopService {
             products.add(product);
         }
 
-        Order newOrder = new Order(UUID.randomUUID().toString(), products, OrderStatus.PROCESSING);
+        Order newOrder = new Order(UUID.randomUUID().toString(), products, OrderStatus.PROCESSING, Instant.now());
 
         return orderRepo.addOrder(newOrder);
     }
@@ -40,7 +41,7 @@ public class ShopService {
 
     public Order updateOrder(String orderId, OrderStatus orderStatus) throws OrderNotFoundException {
         Optional<Order> optionalOrder = orderRepo.getOrderById(orderId);
-        
+
         Order orderToUpdate = optionalOrder.orElseThrow(() -> new OrderNotFoundException(orderId));
 
         orderToUpdate = orderToUpdate.withOrderStatus(orderStatus);
