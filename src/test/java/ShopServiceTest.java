@@ -1,7 +1,9 @@
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -84,5 +86,44 @@ class ShopServiceTest {
 
         // THEN
         assertThrows(OrderNotFoundException.class, () -> shopService.updateOrder(notExistingOrderId, OrderStatus.COMPLETED));
+    }
+
+    @Test
+    void getOldestOrderByStatus_shouldReturnTrueWhenMapIsCorrect() throws InterruptedException {
+
+        // SETUP
+        ShopService shopService = new ShopService();
+        OrderRepo orderRepo = shopService.getOrderRepo();
+
+        Instant now = Instant.now();
+
+        // add Orders
+        Order olderOrderProcessing = new Order("1", List.of(new Product("1", "Apfel")), OrderStatus.PROCESSING, now.minusMillis(2000));
+        Order newerOrderProcessing = new Order("2", List.of(new Product("1", "Apfel")), OrderStatus.PROCESSING, now);
+
+        Order olderOrderDelivery = new Order("3", List.of(new Product("1", "Apfel")), OrderStatus.IN_DELIVERY, now.minusMillis(2000));
+        Order newerOrderDelivery = new Order("4", List.of(new Product("1", "Apfel")), OrderStatus.IN_DELIVERY, now);
+
+        Order olderOrderCompleted = new Order("5", List.of(new Product("1", "Apfel")), OrderStatus.COMPLETED, now.minusMillis(2000));
+        Order newerOrderCompleted = new Order("6", List.of(new Product("1", "Apfel")), OrderStatus.COMPLETED, now);
+
+        List<Order> allOrders = List.of(olderOrderProcessing, newerOrderProcessing, olderOrderDelivery, newerOrderDelivery, olderOrderCompleted, newerOrderCompleted);
+
+        for (Order order : allOrders) {
+            orderRepo.addOrder(order);
+        }
+
+        // EXPECTED
+        Map<OrderStatus, Order> expectedMap = new HashMap<>();
+        expectedMap.put(OrderStatus.PROCESSING, olderOrderProcessing);
+        expectedMap.put(OrderStatus.IN_DELIVERY, olderOrderDelivery);
+        expectedMap.put(OrderStatus.COMPLETED, olderOrderCompleted);
+
+        // ACTUAL
+        Map<OrderStatus, Order> actualMap = shopService.getOldestOrderByStatus();
+
+        assertEquals(expectedMap, actualMap);
+
+
     }
 }

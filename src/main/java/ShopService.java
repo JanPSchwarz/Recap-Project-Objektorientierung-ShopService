@@ -1,10 +1,7 @@
 import lombok.*;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Builder
 @AllArgsConstructor
@@ -48,5 +45,19 @@ public class ShopService {
         orderRepo.addOrder(orderToUpdate);
 
         return orderToUpdate;
+    }
+
+    public Map<OrderStatus, Order> getOldestOrderByStatus() {
+        Map<OrderStatus, Order> resultMap = new HashMap<>();
+
+        List<Order> orders = orderRepo.getOrders();
+        List<OrderStatus> allOrderStatuses = List.of(OrderStatus.PROCESSING, OrderStatus.IN_DELIVERY, OrderStatus.COMPLETED);
+
+        for (OrderStatus orderStatus : allOrderStatuses) {
+            orders.stream().filter(order -> order.orderStatus().equals(orderStatus)).min(Comparator.comparing(Order::timeOfOrder)).ifPresent(order -> {
+                resultMap.put(orderStatus, order);
+            });
+        }
+        return resultMap;
     }
 }
