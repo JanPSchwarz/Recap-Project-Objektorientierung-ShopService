@@ -64,11 +64,11 @@ class ShopServiceTest {
         // SETUP
         ShopService shopService = new ShopService();
         OrderRepo repo = shopService.getOrderRepo();
-        Order newOrder = new Order("1", List.of(new Product("1", "Apfel")), OrderStatus.PROCESSING, Instant.now());
+        Order newOrder = new Order("1", List.of(new Product("1", "Apfel")), OrderStatus.PROCESSING);
         repo.addOrder(newOrder);
 
         // EXPECTED
-        Order expectedUpdatedOrder = new Order("1", List.of(new Product("1", "Apfel")), OrderStatus.COMPLETED, Instant.now());
+        Order expectedUpdatedOrder = new Order("1", List.of(new Product("1", "Apfel")), OrderStatus.COMPLETED);
 
         // THEN
         Order actualUpdatedOrder = shopService.updateOrder(newOrder.id(), OrderStatus.COMPLETED);
